@@ -1,0 +1,4 @@
+/frontend/node_modules
+/backend/database/sqlite/*.sqlite3
+/backend/vendor
+.idea

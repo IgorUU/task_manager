@@ -1,0 +1,23 @@
+{
+    "name": "igoruu/reactphpsimple",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Igor Ušumović",
+            "email": "igor_1991@live.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "autoload": {
+        "files": [
+            "./load.environment.php"
+        ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "./scripts/boot.sh"
+        ]
+    }
+}

@@ -26,7 +26,7 @@ function App() {
   return (
     <div className="App">
       <form
-        action="http://localhost:8080/insert"
+        action={`${process.env.REACT_APP_BACKEND_API}/insert`}
         method="post"
         onSubmit={(event) => handleSubmit(event)}
       >
@@ -43,7 +43,7 @@ function App() {
       </form>
       <h1>{result}</h1>
       {/* TODO: Make this work on ajax like the request above. */}
-      <a href="http://localhost:8080/delete">Delete all tasks</a>
+      <a href={`${process.env.REACT_APP_BACKEND_API}/delete`}>Delete all tasks</a>
     </div>
   );
 }

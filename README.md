@@ -5,20 +5,14 @@ docker compose up -d
 docker compose exec php composer install
 ```
 
-The React app is served on http://localhost:3000/.
+Task manager app is served on http://localhost:3000/.
 <br />
 <br />
 
 # Future plans
-- [ ] Create a base for simple React - PHP projects.
-  - [x] Try to implement SQLite database system.
-- [ ] Create a task manager application. Or something similar. Investigate.
-  - [x] Create a link for dropping all of the database tables ("Clear all tasks").
-  - [ ] Create a task description field that is also going to be saved in the database table.
-<br />
-<br />
-<br />
-<br />
+- [x] Create a link for dropping all of the database tables ("Clear all tasks").
+- [ ] That link must work on ajax like the task creation.
+- [ ] Create a task description field that is also going to be saved in the database table.
 <br />
 <br />
 
@@ -26,10 +20,6 @@ The React app is served on http://localhost:3000/.
 
 - This project is using **SQLite**. In order to use **MySQL**, you would need to install PHP extensions **mysqli** and **pdo_mysql**.
 - In order to properly connect to the SQLite database and execute queries in the PHPStorm I needed to install the recommended SQLite driver.
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 

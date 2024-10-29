@@ -22,13 +22,10 @@ class MyDB extends SQLite3 {
         $statement->bindValue(':task', $task);
         $statement->bindValue(':time', time());
         $statement->execute();
-
-        echo ("Task \"$task\" created.");
     }
 
     public function dropTable() {
         $this->query('DELETE FROM tasks');
-        echo "Tasks have been deleted successfully.";
     }
 
 }

@@ -19,5 +19,8 @@
         "post-install-cmd": [
             "./scripts/boot.sh"
         ]
+    },
+    "require-dev": {
+        "kint-php/kint": "^5.1"
     }
 }

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import $ from "jquery";
-import "./App.css";
+import './App.css';
 
 function App() {
   const [name, setName] = useState("");
@@ -10,17 +9,25 @@ function App() {
     setName(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = $(e.target);
-    $.ajax({
-      type: "POST",
-      url: form.attr("action"),
-      data: form.serialize(),
-      success(data) {
-        setResult(data);
-      },
-    });
+    const formData = new FormData(e.target);
+    const task = formData.get('task');
+
+    try {
+      const response = await fetch(e.target.action, {
+        method: "POST",
+        body: formData,
+      })
+
+      if (response.ok) {
+        const data = await response.json();
+
+        setResult(data.message)
+      };
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

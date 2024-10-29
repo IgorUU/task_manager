@@ -18,12 +18,18 @@ if (!$db) {
 
 $router->addRoute('POST', '/insert', function () use ($db, $task) {
     $db->insert($task);
-    die;
+
+    echo json_encode([
+        'message' => "Task '$task' created.",
+    ]);
 });
 
 $router->addRoute('GET', '/delete', function () use ($db) {
     $db->dropTable();
-    die;
+
+    echo json_encode([
+        'message' => 'All tasks deleted successfully',
+    ]);
 });
 
 $router->matchRoute();

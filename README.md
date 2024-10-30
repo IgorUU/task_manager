@@ -11,7 +11,7 @@ Task manager app is served on http://localhost:3000/.
 
 # Future plans
 - [x] Create a link for dropping all of the database tables ("Clear all tasks").
-- [ ] That link must work on ajax like the task creation.
+- [x] That link must work on ajax like the task creation.
 - [ ] Create a task description field that is also going to be saved in the database table.
 <br />
 <br />

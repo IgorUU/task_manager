@@ -28,7 +28,7 @@ $router->addRoute('GET', '/delete', function () use ($db) {
     $db->dropTable();
 
     echo json_encode([
-        'message' => 'All tasks deleted successfully',
+    'message' => "All tasks deleted successfully!",
     ]);
 });
 

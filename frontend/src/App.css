@@ -1,5 +1,8 @@
-.App {
-  text-align: center;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .App-logo {
@@ -35,4 +38,31 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+label {
+  text-align: center;
+  font-size: 14px;
+  /* font-family:  */
+  padding: 2px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.input-group input {
+  width: 200px;
+  align-self: center;
+  border: 2px solid gray;
+  border-radius: 10%;
+}
+
+.input-group textarea {
+  width: 400px;
+  border: 2px solid gray;
+  border-radius: 5%;
+  padding: 10px;
 }

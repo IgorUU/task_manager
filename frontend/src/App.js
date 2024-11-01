@@ -2,8 +2,10 @@ import { useState } from "react";
 import './App.css';
 
 function App() {
-  const [name, setName] = useState("");
+  const [task, setTask] = useState("");
   const [result, setResult] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+
 
   const deleteAllTasks = async () => {
     try {
@@ -40,7 +42,13 @@ function App() {
   };
 
   const handleChange = (e) => {
-    setName(e.target.value);
+    const {name, value} = e.target;
+    if (name === 'task') {
+      setTask(value);
+    }
+    if (name === 'taskDescription') {
+      setTaskDescription(value);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -59,18 +67,28 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <form
-        onSubmit={(event) => handleSubmit(event)}
-      >
-        <label htmlFor="task">Task name: </label>
-        <input
-          type="text"
-          id="task"
-          name="task"
-          value={name}
-          onChange={(event) => handleChange(event)}
-        />
+    <div className="container">
+      <form onSubmit={(event) => handleSubmit(event)}>
+        <div className="input-group">
+          <label htmlFor="task">Task name: </label>
+          <input
+            type="text"
+            id="task"
+            name="task"
+            value={task}
+            onChange={(event) => handleChange(event)}
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="taskDescription">Task description: </label>
+          <textarea
+            name="taskDescription"
+            rows={15}
+            minLength={50}
+            value={taskDescription}
+            onChange={(event) => handleChange(event)}
+          />
+        </div>
         <br />
         <button type="submit" name="create">
           Create
@@ -81,7 +99,6 @@ function App() {
       </form>
 
       <h1>{result}</h1>
-
     </div>
   );
 }

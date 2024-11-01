@@ -84,7 +84,6 @@ function App() {
           <textarea
             name="taskDescription"
             rows={15}
-            minLength={50}
             value={taskDescription}
             onChange={(event) => handleChange(event)}
           />

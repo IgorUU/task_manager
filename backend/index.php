@@ -15,12 +15,10 @@ if (!$db) {
     return;
 }
 
-$router->addRoute('POST', '/insert', function () use ($db) {
-    $db->insert();
-});
+$router->addRoute('POST', '/insert', fn() => $db->insert());
 
-$router->addRoute('GET', '/delete', function () use ($db) {
-    $db->dropTable();
-});
+$router->addRoute('GET', '/delete', fn () => $db->dropTable());
+
+$router->addRoute('GET', '/getTasks', fn () => $db->getTasks());
 
 $router->matchRoute();

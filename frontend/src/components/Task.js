@@ -1,8 +1,9 @@
-function Task() {
+function Task({ task }) {
 
     return (
         <div>
-            <h3>This is a task.</h3>
+            <h3>{task.task}</h3>
+            <p>{task.task_description}</p>
         </div>
     );
 }

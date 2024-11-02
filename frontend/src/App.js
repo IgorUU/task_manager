@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Task from "./components/Task";
 import './App.css';
 
 function App() {
@@ -98,6 +99,9 @@ function App() {
       </form>
 
       <h1>{result}</h1>
+      {/* Foreach Task components
+      render Task compomenent */}
+      <Task />
     </div>
   );
 }

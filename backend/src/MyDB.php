@@ -43,4 +43,14 @@ class MyDB extends SQLite3
             'message' => "All tasks deleted successfully!",
         ]);
     }
+
+    public function getTasks() {
+        $results = [];
+        $query = $this->query('SELECT * FROM tasks');
+        while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            $results[]= $row;
+        }
+
+        echo json_encode($results);
+    }
 }

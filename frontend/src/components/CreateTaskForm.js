@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import Task from './Task';
+import { useState, useEffect } from "react";
+import Task from "./Task";
 import "../App.css";
 
-function CreateTaskForm () {
+function CreateTaskForm() {
   const [task, setTask] = useState("");
   const [result, setResult] = useState("");
+  const [responseStatus, setResponseStatus] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [tasks, setTasks] = useState([]);
 
@@ -14,8 +15,8 @@ function CreateTaskForm () {
 
   const fetchTasks = () => {
     return fetch(`${process.env.REACT_APP_BACKEND_API}/getTasks`)
-    .then((res) => res.json())
-    .then((data) => setTasks(data));
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
   };
 
   const deleteAllTasks = async () => {
@@ -48,10 +49,13 @@ function CreateTaskForm () {
         }
       );
 
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
-
+        setResponseStatus("success");
         setResult(data.message);
+      } else {
+        setResponseStatus("error");
+        setResult(data.error);
       }
     } catch (error) {
       console.error(error);
@@ -75,11 +79,19 @@ function CreateTaskForm () {
 
     if (submitter_name === "delete") {
       deleteAllTasks();
+
     }
 
     if (submitter_name === "create") {
       createTask(e);
     }
+
+    clearInputs();
+  };
+
+  const clearInputs = () => {
+    setTask("");
+    setTaskDescription("");
   };
 
   return (
@@ -113,8 +125,10 @@ function CreateTaskForm () {
         </button>
       </form>
 
-      <h1>{result}</h1>
-      {tasks.map((task, i) => <Task key={i} task={task} />)}
+      <h1 className={responseStatus}>{result}</h1>
+      {tasks.map((task, i) => (
+        <Task key={i} task={task} />
+      ))}
     </>
   );
 }

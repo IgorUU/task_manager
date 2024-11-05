@@ -20,7 +20,8 @@ class MyDB extends SQLite3
         $task_description = $_POST['taskDescription'] ?? '';
 
         if (empty($task)) {
-            echo 'Please enter a task name';
+            http_response_code(400);
+            echo json_encode(['error' => 'Please enter a task name']);
             return;
         }
 

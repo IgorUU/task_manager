@@ -11,6 +11,7 @@ Task manager app is served on http://localhost:3000/.
 
 # Future plans
 - [ ] Add some cool styling.
+- [ ] Make form buttons change style on hover over.
 - [ ] Registration and login. (Tokens, OAuth...)
 - [ ] Session handling.
 - [ ] Edit existing tasks.

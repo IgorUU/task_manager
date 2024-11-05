@@ -2,6 +2,17 @@ body {
   background-color: #f2c636;
 }
 
+.task-form-buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.task-form-buttons > button {
+  height: 40px;
+  width: 120px;
+  border-radius: 10%;
+}
+
 .tasks {
   display: flex;
   flex-wrap: wrap;

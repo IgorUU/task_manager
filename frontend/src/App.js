@@ -1,12 +1,7 @@
 import CreateTaskForm from "./components/CreateTaskForm";
 
 function App() {
-
-  return (
-    <div>
-      <CreateTaskForm />
-    </div>
-  );
+  return <CreateTaskForm />;
 }
 
 export default App;

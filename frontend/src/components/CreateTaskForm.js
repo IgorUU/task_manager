@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Task from "./Task";
+import FormButtons from "./FormButtons";
 import "../App.css";
 
 function CreateTaskForm() {
@@ -117,12 +118,7 @@ function CreateTaskForm() {
             />
           </div>
           <br />
-          <button type="submit" name="create">
-            Create
-          </button>
-          <button type="submit" name="delete">
-            Delete all tasks
-          </button>
+          <FormButtons />
         </form>
 
         <h1 className={responseStatus}>{result}</h1>

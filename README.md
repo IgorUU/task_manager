@@ -13,6 +13,10 @@ Task manager app is served on http://localhost:3000/.
 - [ ] Add some cool styling.
 - [ ] Registration and login. (Tokens, OAuth...)
 - [ ] Session handling.
+- [ ] Edit existing tasks.
+- [ ] Delete task one by one.
+- [ ] Drag and drop tasks to reorder them.
+- [x] Latest task must the first one after the form.
 - [x] Create a link for dropping all of the database tables ("Clear all tasks").
 - [x] That link must work on ajax like the task creation.
 - [x] Create a task description field that is also going to be saved in the database table.

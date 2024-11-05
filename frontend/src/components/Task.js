@@ -1,9 +1,9 @@
 function Task({ task }) {
 
     return (
-        <div>
+        <div className="task">
             <h3>{task.task}</h3>
-            <p>{task.task_description}</p>
+            <p className="task-description">{task.task_description}</p>
         </div>
     );
 }

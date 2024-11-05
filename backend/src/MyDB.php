@@ -47,7 +47,7 @@ class MyDB extends SQLite3
 
     public function getTasks() {
         $results = [];
-        $query = $this->query('SELECT * FROM tasks');
+        $query = $this->query('SELECT * FROM tasks ORDER BY time DESC');
         while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             $results[]= $row;
         }

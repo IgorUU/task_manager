@@ -1,8 +1,32 @@
+body {
+  background-color: #f2c636;
+}
+
+.tasks {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 50px;
+  width: 100%;
+}
+
+.task {
+  overflow: scroll;
+  margin: 10px;
+  padding: 10px;
+  width: 350px;
+  border: 1px solid black;
+}
+
+.task-descriptions {
+  white-space: break-spaces;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: rgb(212, 140, 6);
 }
 
 .App-logo {
@@ -43,7 +67,6 @@
 label {
   text-align: center;
   font-size: 14px;
-  /* font-family:  */
   padding: 2px;
 }
 
@@ -58,6 +81,7 @@ label {
   align-self: center;
   border: 2px solid gray;
   border-radius: 10%;
+  background-color: #ffe99f;
 }
 
 .input-group textarea {
@@ -65,4 +89,16 @@ label {
   border: 2px solid gray;
   border-radius: 5%;
   padding: 10px;
+  background-color: #ffe99f;
+}
+
+@media (max-width: 768px) {
+  .tasks {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .task {
+    width: 150px;
+  }
 }

@@ -79,7 +79,6 @@ function CreateTaskForm() {
 
     if (submitter_name === "delete") {
       deleteAllTasks();
-
     }
 
     if (submitter_name === "create") {
@@ -96,39 +95,44 @@ function CreateTaskForm() {
 
   return (
     <>
-      <form onSubmit={(event) => handleSubmit(event)}>
-        <div className="input-group">
-          <label htmlFor="task">Task name: </label>
-          <input
-            type="text"
-            id="task"
-            name="task"
-            value={task}
-            onChange={(event) => handleChange(event)}
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="taskDescription">Task description: </label>
-          <textarea
-            name="taskDescription"
-            rows={15}
-            value={taskDescription}
-            onChange={(event) => handleChange(event)}
-          />
-        </div>
-        <br />
-        <button type="submit" name="create">
-          Create
-        </button>
-        <button type="submit" name="delete">
-          Delete all tasks
-        </button>
-      </form>
+      <div className="container">
+        <form onSubmit={(event) => handleSubmit(event)}>
+          <div className="input-group">
+            <label htmlFor="task">Task name: </label>
+            <input
+              type="text"
+              id="task"
+              name="task"
+              value={task}
+              onChange={(event) => handleChange(event)}
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="taskDescription">Task description: </label>
+            <textarea
+              name="taskDescription"
+              rows={15}
+              value={taskDescription}
+              onChange={(event) => handleChange(event)}
+            />
+          </div>
+          <br />
+          <button type="submit" name="create">
+            Create
+          </button>
+          <button type="submit" name="delete">
+            Delete all tasks
+          </button>
+        </form>
 
-      <h1 className={responseStatus}>{result}</h1>
-      {tasks.map((task, i) => (
-        <Task key={i} task={task} />
-      ))}
+        <h1 className={responseStatus}>{result}</h1>
+      </div>
+
+      <div className="tasks">
+        {tasks.map((task, i) => (
+          <Task key={i} task={task} />
+        ))}
+      </div>
     </>
   );
 }

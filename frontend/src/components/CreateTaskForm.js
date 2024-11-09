@@ -121,7 +121,7 @@ function CreateTaskForm() {
           <FormButtons />
         </form>
 
-        <h1 className={responseStatus}>{result}</h1>
+        <h1 className={`result-message ${responseStatus}`}>{result}</h1>
       </div>
 
       <div className="tasks">

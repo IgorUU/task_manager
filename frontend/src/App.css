@@ -28,6 +28,10 @@ body {
   background-color: rgb(96, 60, 3);
 }
 
+.result-message {
+  min-height: 32px;
+}
+
 .tasks {
   display: flex;
   flex-wrap: wrap;

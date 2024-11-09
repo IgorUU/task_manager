@@ -16,6 +16,7 @@ Task manager app is served on http://localhost:3000/.
 - [ ] Edit existing tasks.
 - [ ] Delete task one by one.
 - [ ] Make sure it looks good on mobile.
+- [x] Take care of tasks going down because of the sentence "New task has been created".
 - [x] Make form buttons change style on hover over.
 - [x] Add some cool styling.
 - [x] Latest task must the first one after the form.

@@ -1,14 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Task from "./Task";
 import FormButtons from "./FormButtons";
 import "../App.css";
+import { closestCenter, DndContext, DragOverlay, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
+import Grid from "./Grid";
+import SortableTask from "./SortableTask";
 
 function CreateTaskForm() {
   const [task, setTask] = useState("");
+  const [activeId, setActiveId] = useState(null);
   const [result, setResult] = useState("");
   const [responseStatus, setResponseStatus] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [tasks, setTasks] = useState([]);
+  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
   useEffect(() => {
     fetchTasks();
@@ -94,6 +100,29 @@ function CreateTaskForm() {
     setTaskDescription("");
   };
 
+  const handleDragStart = useCallback((event) => {
+    setActiveId(event.active.id);
+  }, []);
+
+  const handleDragEnd = useCallback((event) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setTasks((tasks) => {
+        const oldIndex = tasks.indexOf(active.id);
+        const newIndex = tasks.indexOf(over.id);
+
+        return arrayMove(tasks, oldIndex, newIndex);
+      });
+    }
+
+    setActiveId(null);
+  }, []);
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
+
   return (
     <>
       <div className="container">
@@ -124,11 +153,24 @@ function CreateTaskForm() {
         <h1 className={`result-message ${responseStatus}`}>{result}</h1>
       </div>
 
-      <div className="tasks">
-        {tasks.map((task, i) => (
-          <Task key={i} task={task} />
-        ))}
-      </div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+      >
+        <SortableContext items={tasks} strategy={rectSortingStrategy}>
+          <Grid columns={5}>
+            {tasks.map((id) => (
+              <SortableTask key={id} id={id} />
+            ))}
+          </Grid>
+        </SortableContext>
+        <DragOverlay adjustScale style={{ transformOrigin: "0 0" }}>
+          {activeId ? <Task id={activeId} isDragging /> : null}
+        </DragOverlay>
+      </DndContext>
     </>
   );
 }

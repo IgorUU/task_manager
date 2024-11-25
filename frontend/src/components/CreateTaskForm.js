@@ -162,6 +162,8 @@ function CreateTaskForm() {
       >
         <SortableContext items={tasks} strategy={rectSortingStrategy}>
           <Grid columns={5}>
+            {/* TODO: The problem with transformation lays here. */}
+            {/* TODO: This can't be id, because its an 0bject. */}
             {tasks.map((id) => (
               <SortableTask key={id} id={id} />
             ))}

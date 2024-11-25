@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-const Task = forwardRef(({ withOpacity, isDragging, style, ...props }, ref) => {
+const Task = forwardRef(({ withOpacity, isDragging, style, task, ...props }, ref) => {
   const inlineStyles = {
     opacity: withOpacity ? "0.5" : "1",
     transformOrigin: "50% 50%",
@@ -19,12 +19,10 @@ const Task = forwardRef(({ withOpacity, isDragging, style, ...props }, ref) => {
     ...style,
   };
 
-  console.log(props.id);
-
   return (
     <div ref={ref} className="task" style={inlineStyles} {...props}>
-      <h3>{props.id.task}</h3>
-      <p className="task-description">{props.id.task_description}</p>
+      <h3>{task.task}</h3>
+      <p className="task-description">{task.task_description}</p>
     </div>
   );
 });

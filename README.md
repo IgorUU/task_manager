@@ -11,6 +11,7 @@ Task manager app is served on http://localhost:3000/.
 
 # Future plans
 - [ ] Drag and drop tasks to reorder them.
+- [ ] Fully understand the process of DND. Optimise the structure.
 - [ ] Registration and login. (Tokens, OAuth...)
 - [ ] Session handling.
 - [ ] Edit existing tasks.

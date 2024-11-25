@@ -105,19 +105,22 @@ function CreateTaskForm() {
   }, []);
 
   const handleDragEnd = useCallback((event) => {
-    const { active, over } = event;
+  const { active, over } = event;
 
-    if (active.id !== over?.id) {
-      setTasks((tasks) => {
-        const oldIndex = tasks.indexOf(active.id);
-        const newIndex = tasks.indexOf(over.id);
+  if (active.id !== over?.id) {
+    setTasks((prevTasks) => {
+      // Find indexes of the active and over items
+      const oldIndex = prevTasks.findIndex((task) => task.id === active.id);
+      const newIndex = prevTasks.findIndex((task) => task.id === over.id);
 
-        return arrayMove(tasks, oldIndex, newIndex);
-      });
-    }
+      // Reorder the tasks
+      return arrayMove(prevTasks, oldIndex, newIndex);
+    });
+  }
 
-    setActiveId(null);
-  }, []);
+  setActiveId(null);
+}, []);
+
 
   const handleDragCancel = useCallback(() => {
     setActiveId(null);
@@ -162,15 +165,15 @@ function CreateTaskForm() {
       >
         <SortableContext items={tasks} strategy={rectSortingStrategy}>
           <Grid columns={5}>
-            {/* TODO: The problem with transformation lays here. */}
-            {/* TODO: This can't be id, because its an 0bject. */}
-            {tasks.map((id) => (
-              <SortableTask key={id} id={id} />
+            {tasks.map((task) => (
+              <SortableTask key={task.id} id={task.id} task={task} />
             ))}
           </Grid>
         </SortableContext>
         <DragOverlay adjustScale style={{ transformOrigin: "0 0" }}>
-          {activeId ? <Task id={activeId} isDragging /> : null}
+          {activeId ? (
+            <Task task={tasks.find((t) => t.id === activeId)} isDragging />
+          ) : null}
         </DragOverlay>
       </DndContext>
     </>

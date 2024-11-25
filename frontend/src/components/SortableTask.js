@@ -2,7 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Task from "./Task";
 
-const SortableTask = (props) => {
+const SortableTask = ({ id, task, ...props }) => {
   const {
     isDragging,
     attributes,
@@ -10,7 +10,7 @@ const SortableTask = (props) => {
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id: props.id });
+  } = useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -22,6 +22,7 @@ const SortableTask = (props) => {
       ref={setNodeRef}
       style={style}
       withOpacity={isDragging}
+      task={task}
       {...props}
       {...attributes}
       {...listeners}

@@ -164,7 +164,7 @@ function CreateTaskForm() {
         onDragCancel={handleDragCancel}
       >
         <SortableContext items={tasks} strategy={rectSortingStrategy}>
-          <Grid columns={5}>
+          <Grid>
             {tasks.map((task) => (
               <SortableTask key={task.id} id={task.id} task={task} />
             ))}

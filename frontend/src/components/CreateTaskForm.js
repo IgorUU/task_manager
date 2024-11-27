@@ -2,8 +2,20 @@ import { useState, useEffect, useCallback } from "react";
 import Task from "./Task";
 import FormButtons from "./FormButtons";
 import "../App.css";
-import { closestCenter, DndContext, DragOverlay, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
 import Grid from "./Grid";
 import SortableTask from "./SortableTask";
 
@@ -105,22 +117,21 @@ function CreateTaskForm() {
   }, []);
 
   const handleDragEnd = useCallback((event) => {
-  const { active, over } = event;
+    const { active, over } = event;
 
-  if (active.id !== over?.id) {
-    setTasks((prevTasks) => {
-      // Find indexes of the active and over items
-      const oldIndex = prevTasks.findIndex((task) => task.id === active.id);
-      const newIndex = prevTasks.findIndex((task) => task.id === over.id);
+    if (active.id !== over?.id) {
+      setTasks((prevTasks) => {
+        // Find indexes of the active and over items
+        const oldIndex = prevTasks.findIndex((task) => task.id === active.id);
+        const newIndex = prevTasks.findIndex((task) => task.id === over.id);
 
-      // Reorder the tasks
-      return arrayMove(prevTasks, oldIndex, newIndex);
-    });
-  }
+        // Reorder the tasks
+        return arrayMove(prevTasks, oldIndex, newIndex);
+      });
+    }
 
-  setActiveId(null);
-}, []);
-
+    setActiveId(null);
+  }, []);
 
   const handleDragCancel = useCallback(() => {
     setActiveId(null);

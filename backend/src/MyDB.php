@@ -10,6 +10,7 @@ class MyDB extends SQLite3
             "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             "task" VARCHAR,
             "task_description" VARCHAR,
+            "weight" INTEGER,
             "time" DATETIME
         )');
     }
@@ -25,9 +26,12 @@ class MyDB extends SQLite3
             return;
         }
 
-        $statement = $this->prepare('INSERT INTO tasks (task, task_description, time) VALUES (:task, :task_description, :time)');
+        $max_weight = $this->querySingle("SELECT IFNULL(MAX(weight), 0) FROM tasks;");
+
+        $statement = $this->prepare('INSERT INTO tasks (task, task_description, weight, time) VALUES (:task, :task_description, :weight, :time)');
         $statement->bindValue(':task', $task);
         $statement->bindValue(':task_description', $task_description);
+        $statement->bindValue(':weight', ++$max_weight);
         $statement->bindValue(':time', time());
         $statement->execute();
 
@@ -39,6 +43,8 @@ class MyDB extends SQLite3
     public function dropTable()
     {
         $this->query('DELETE FROM tasks');
+        // Reset autoincrement.
+        $this->query('DELETE FROM sqlite_sequence WHERE name="tasks"');
 
         echo json_encode([
             'message' => "All tasks deleted successfully!",

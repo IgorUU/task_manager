@@ -126,7 +126,10 @@ function CreateTaskForm() {
         const newIndex = prevTasks.findIndex((task) => task.id === over.id);
 
         // Reorder the tasks
-        return arrayMove(prevTasks, oldIndex, newIndex);
+        const newTasks = arrayMove(prevTasks, oldIndex, newIndex);
+
+        // TODO: Update the weight at this point.
+        return newTasks;
       });
     }
 

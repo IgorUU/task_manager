@@ -125,11 +125,10 @@ function CreateTaskForm() {
         const oldIndex = prevTasks.findIndex((task) => task.id === active.id);
         const newIndex = prevTasks.findIndex((task) => task.id === over.id);
 
-        // Reorder the tasks
-        const newTasks = arrayMove(prevTasks, oldIndex, newIndex);
-
-        // TODO: Update the weight at this point.
-        return newTasks;
+        // Reorder the tasks and update the weight.
+        return setTaskWeight(
+          arrayMove(prevTasks, oldIndex, newIndex)
+        );
       });
     }
 
@@ -138,6 +137,16 @@ function CreateTaskForm() {
 
   const handleDragCancel = useCallback(() => {
     setActiveId(null);
+  }, []);
+
+  const setTaskWeight = useCallback((orderedTasks) => {
+    orderedTasks.forEach((task, index) => {
+      task["weight"] = index + 1;
+    });
+
+    // TODO: Send request to backend.
+
+    return orderedTasks;
   }, []);
 
   return (

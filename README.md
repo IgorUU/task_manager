@@ -10,16 +10,16 @@ Task manager app is served on http://localhost:3000/.
 <br />
 
 # Future plans
-- [ ] Drag and drop tasks to reorder them.
 - [ ] Optimise the CreateTaksForm file. Extract methods to some other components/classes.
-- [ ] Fully understand the process of DND. Optimise the structure.
-- [ ] DND reordering should be preserved on page reload.
-- [ ] When tasks are deleted, the new one should have an ID 1.
 - [ ] Registration and login. (Tokens, OAuth...)
 - [ ] Session handling.
 - [ ] Edit existing tasks.
 - [ ] Delete task one by one.
 - [ ] Make sure it looks good on mobile.
+- [x] Drag and drop tasks to reorder them.
+- [x] Fully understand the process of DND. Optimise the structure.
+- [x] DND reordering should be preserved on page reload.
+- [x] When tasks are deleted, the new one should have an ID 1.
 - [x] Take care of tasks going down because of the sentence "New task has been created".
 - [x] Make form buttons change style on hover over.
 - [x] Add some cool styling.

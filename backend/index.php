@@ -5,6 +5,8 @@ include './src/MyDB.php';
 include './src/Router.php';
 
 header('Access-Control-Allow-Origin: http://localhost:3000');
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 $request = $_SERVER['REQUEST_URI'];
 
 $router = new Router();
@@ -16,6 +18,8 @@ if (!$db) {
 }
 
 $router->addRoute('POST', '/insert', fn() => $db->insert());
+
+$router->addRoute('POST', '/update', fn() => $db->update());
 
 $router->addRoute('GET', '/delete', fn () => $db->dropTable());
 

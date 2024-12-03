@@ -35,7 +35,10 @@ function CreateTaskForm() {
   const fetchTasks = () => {
     return fetch(`${process.env.REACT_APP_BACKEND_API}/getTasks`)
       .then((res) => res.json())
-      .then((data) => setTasks(data));
+      .then((data) => {
+        const sortedData = data.sort((a, b) => a.weight - b.weight);
+        setTasks(sortedData);
+      });
   };
 
   const deleteAllTasks = async () => {
@@ -112,6 +115,27 @@ function CreateTaskForm() {
     setTaskDescription("");
   };
 
+  const setTaskWeight = async (orderedTasks) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_API}/update`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderedTasks),
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Error from the server:", await response.json());
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleDragStart = useCallback((event) => {
     setActiveId(event.active.id);
   }, []);
@@ -126,9 +150,13 @@ function CreateTaskForm() {
         const newIndex = prevTasks.findIndex((task) => task.id === over.id);
 
         // Reorder the tasks and update the weight.
-        return setTaskWeight(
-          arrayMove(prevTasks, oldIndex, newIndex)
-        );
+        const orderedTasks = arrayMove(prevTasks, oldIndex, newIndex);
+        orderedTasks.forEach((task, index) => {
+          task["weight"] = index + 1;
+        });
+        setTaskWeight(orderedTasks);
+
+        return orderedTasks;
       });
     }
 
@@ -137,16 +165,6 @@ function CreateTaskForm() {
 
   const handleDragCancel = useCallback(() => {
     setActiveId(null);
-  }, []);
-
-  const setTaskWeight = useCallback((orderedTasks) => {
-    orderedTasks.forEach((task, index) => {
-      task["weight"] = index + 1;
-    });
-
-    // TODO: Send request to backend.
-
-    return orderedTasks;
   }, []);
 
   return (

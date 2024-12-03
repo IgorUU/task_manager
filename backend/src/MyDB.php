@@ -40,6 +40,22 @@ class MyDB extends SQLite3
         ]);
     }
 
+    public function update() {
+        // This is the usual way of getting JSON data from the request.
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($rawData, true);
+
+        // Batch update, because on single task move all rows all affected.
+        $cases = [];
+        foreach ($data as $key => $val) {
+            $cases[] = "WHEN id = {$val['id']} THEN {$val['weight']}";
+        }
+        $cases = implode(' ', $cases);
+
+        $query = $this->prepare("UPDATE tasks SET weight = CASE {$cases} END");
+        $query->execute();
+    }
+
     public function dropTable()
     {
         $this->query('DELETE FROM tasks');

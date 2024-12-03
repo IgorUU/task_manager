@@ -1,14 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Task from "./Task";
 import FormButtons from "./FormButtons";
 import "../App.css";
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
+import Grid from "./Grid";
+import SortableTask from "./SortableTask";
 
 function CreateTaskForm() {
   const [task, setTask] = useState("");
+  const [activeId, setActiveId] = useState(null);
   const [result, setResult] = useState("");
   const [responseStatus, setResponseStatus] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [tasks, setTasks] = useState([]);
+  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
   useEffect(() => {
     fetchTasks();
@@ -17,7 +35,10 @@ function CreateTaskForm() {
   const fetchTasks = () => {
     return fetch(`${process.env.REACT_APP_BACKEND_API}/getTasks`)
       .then((res) => res.json())
-      .then((data) => setTasks(data));
+      .then((data) => {
+        const sortedData = data.sort((a, b) => a.weight - b.weight);
+        setTasks(sortedData);
+      });
   };
 
   const deleteAllTasks = async () => {
@@ -94,6 +115,58 @@ function CreateTaskForm() {
     setTaskDescription("");
   };
 
+  const setTaskWeight = async (orderedTasks) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_API}/update`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderedTasks),
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Error from the server:", await response.json());
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDragStart = useCallback((event) => {
+    setActiveId(event.active.id);
+  }, []);
+
+  const handleDragEnd = useCallback((event) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setTasks((prevTasks) => {
+        // Find indexes of the active and over items
+        const oldIndex = prevTasks.findIndex((task) => task.id === active.id);
+        const newIndex = prevTasks.findIndex((task) => task.id === over.id);
+
+        // Reorder the tasks and update the weight.
+        const orderedTasks = arrayMove(prevTasks, oldIndex, newIndex);
+        orderedTasks.forEach((task, index) => {
+          task["weight"] = index + 1;
+        });
+        setTaskWeight(orderedTasks);
+
+        return orderedTasks;
+      });
+    }
+
+    setActiveId(null);
+  }, []);
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
+
   return (
     <>
       <div className="container">
@@ -124,11 +197,26 @@ function CreateTaskForm() {
         <h1 className={`result-message ${responseStatus}`}>{result}</h1>
       </div>
 
-      <div className="tasks">
-        {tasks.map((task, i) => (
-          <Task key={i} task={task} />
-        ))}
-      </div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+      >
+        <SortableContext items={tasks} strategy={rectSortingStrategy}>
+          <Grid>
+            {tasks.map((task) => (
+              <SortableTask key={task.id} id={task.id} task={task} />
+            ))}
+          </Grid>
+        </SortableContext>
+        <DragOverlay adjustScale style={{ transformOrigin: "0 0" }}>
+          {activeId ? (
+            <Task task={tasks.find((t) => t.id === activeId)} isDragging />
+          ) : null}
+        </DragOverlay>
+      </DndContext>
     </>
   );
 }

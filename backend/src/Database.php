@@ -1,6 +1,6 @@
 <?php
 
-class MyDB extends SQLite3
+class Database extends SQLite3
 {
 
     public function __construct()

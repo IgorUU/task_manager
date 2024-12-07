@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Task from "./Task";
 import FormButtons from "./FormButtons";
 import "../App.css";
@@ -11,78 +11,31 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import {
-  arrayMove,
-  rectSortingStrategy,
-  SortableContext,
-} from "@dnd-kit/sortable";
+import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import Grid from "./Grid";
 import SortableTask from "./SortableTask";
+import useDNDUtilities from "./DNDUtilities";
+import useTaskActions from "./TaskActions";
 
 function CreateTaskForm() {
   const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
   const [activeId, setActiveId] = useState(null);
+  const [taskDescription, setTaskDescription] = useState("");
   const [result, setResult] = useState("");
   const [responseStatus, setResponseStatus] = useState("");
-  const [taskDescription, setTaskDescription] = useState("");
-  const [tasks, setTasks] = useState([]);
+  const { setTaskWeight, fetchTasks, deleteAllTasks, createTask } =
+    useTaskActions(setTasks, setResult, setResponseStatus);
+  const { handleDragStart, handleDragEnd, handleDragCancel } = useDNDUtilities(
+    setTasks,
+    setTaskWeight,
+    setActiveId
+  );
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
   useEffect(() => {
     fetchTasks();
-  }, [result]);
-
-  const fetchTasks = () => {
-    return fetch(`${process.env.REACT_APP_BACKEND_API}/getTasks`)
-      .then((res) => res.json())
-      .then((data) => {
-        const sortedData = data.sort((a, b) => a.weight - b.weight);
-        setTasks(sortedData);
-      });
-  };
-
-  const deleteAllTasks = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/delete`,
-        {
-          method: "GET",
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-
-        setResult(data.message);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const createTask = async (e) => {
-    const formData = new FormData(e.target);
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/insert`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-      if (response.ok) {
-        setResponseStatus("success");
-        setResult(data.message);
-      } else {
-        setResponseStatus("error");
-        setResult(data.error);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  }, [result, fetchTasks]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,17 +49,14 @@ function CreateTaskForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const submitter_name = e.nativeEvent.submitter.name;
 
     if (submitter_name === "delete") {
       deleteAllTasks();
     }
-
     if (submitter_name === "create") {
       createTask(e);
     }
-
     clearInputs();
   };
 
@@ -114,58 +64,6 @@ function CreateTaskForm() {
     setTask("");
     setTaskDescription("");
   };
-
-  const setTaskWeight = async (orderedTasks) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/update`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(orderedTasks),
-        }
-      );
-
-      if (!response.ok) {
-        console.error("Error from the server:", await response.json());
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleDragStart = useCallback((event) => {
-    setActiveId(event.active.id);
-  }, []);
-
-  const handleDragEnd = useCallback((event) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      setTasks((prevTasks) => {
-        // Find indexes of the active and over items
-        const oldIndex = prevTasks.findIndex((task) => task.id === active.id);
-        const newIndex = prevTasks.findIndex((task) => task.id === over.id);
-
-        // Reorder the tasks and update the weight.
-        const orderedTasks = arrayMove(prevTasks, oldIndex, newIndex);
-        orderedTasks.forEach((task, index) => {
-          task["weight"] = index + 1;
-        });
-        setTaskWeight(orderedTasks);
-
-        return orderedTasks;
-      });
-    }
-
-    setActiveId(null);
-  }, []);
-
-  const handleDragCancel = useCallback(() => {
-    setActiveId(null);
-  }, []);
 
   return (
     <>

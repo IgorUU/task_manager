@@ -10,12 +10,12 @@ Task manager app is served on http://localhost:3000/.
 <br />
 
 # Future plans
-- [ ] Optimise the CreateTaksForm file. Extract methods to some other components/classes.
 - [ ] Registration and login. (Tokens, OAuth...)
 - [ ] Session handling.
 - [ ] Edit existing tasks.
 - [ ] Delete task one by one.
 - [ ] Make sure it looks good on mobile.
+- [x] Optimise the CreateTaksForm file. Extract methods to some other components/classes.
 - [x] Drag and drop tasks to reorder them.
 - [x] Fully understand the process of DND. Optimise the structure.
 - [x] DND reordering should be preserved on page reload.

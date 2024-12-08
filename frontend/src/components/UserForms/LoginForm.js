@@ -1,37 +1,66 @@
 import { useState } from "react";
 
 function LoginForm() {
-  const [showLoginInputs, setShowLoginInputs] = useState(false);
-  const [showRegisterInputs, setShowRegisterInputs] = useState(false);
+  const [action, setAction] = useState(null);
 
-  const handleClick = (action) => {
-    setShowLoginInputs(action === 'login');
-    setShowRegisterInputs(action === 'register');
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    // TODO: Maybe have 2 different functions handleLogin and handleRegister.
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_API}/${action}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        // TODO: If login, show the notes.
+        // TODO: If register, show the thank you page.
+        console.log(response);
+      } else {
+        console.log(data.error)
+      }
+    }
+    catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
       <h1>Login form</h1>
-      <button onClick={() => handleClick("login")}>Login</button>
-      <button onClick={() => handleClick("register")}>Register</button>
+      <button onClick={() => setAction("login")}>Login</button>
+      <button onClick={() => setAction("register")}>Register</button>
+      {action && (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email" name="email" />
 
-      {showLoginInputs && (
-        <>
-          <input type="text" name="email"></input>
-          <input type="password" name="password"></input>
-        </>
-      )}
-      {showRegisterInputs && (
-        <>
-          <input type="text" name="email" placeholder="Email" />
-          <input type="text" name="username" placeholder="Username" />
-          <input type="password" name="password" placeholder="Password" />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-          />
-        </>
+          {action === "register" && (
+            <>
+              <label htmlFor="username">Username</label>
+              <input type="text" id="username" name="username" />
+            </>
+          )}
+
+          <label htmlFor="password">Password</label>
+          <input type="password" id="password" name="password" />
+
+          {action === "register" && (
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+            />
+          )}
+
+          <input type="submit" value="Submit" />
+        </form>
       )}
     </>
   );
